@@ -86,7 +86,7 @@
     <!-- ============================================================== -->
     <!-- Page wrapper  -->
     <!-- ============================================================== -->
-    <div class="page-wrapper" style="min-height: 569px;">
+    <div class="page-wrapper" style="min-height: 600px;">
         <!-- ============================================================== -->
         <!-- Container fluid  -->
         <!-- ============================================================== -->
@@ -97,7 +97,12 @@
             <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
                     <h3 class="text-themecolor m-b-0 m-t-0">Dashboard</h3>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"> Home</li>
+                        <li class="breadcrumb-item active">Expenses</li>
+                    </ol>
                 </div>
+
             </div>
             <!-- ============================================================== -->
             <!-- End Bread crumb and right sidebar toggle -->
@@ -105,12 +110,89 @@
             <!-- ============================================================== -->
             <!-- Start Page Content -->
             <!-- ============================================================== -->
+
+            @if($errors->has('date'))
+            <div class="row">
+                <p class="alert alert-danger">{{ $errors->first('date') }}</p>
+            </div>
+            @endif
+
+            @if($errors->has('value'))
+                <div class="row">
+                    <p class="alert alert-danger">{{ $errors->first('value') }}</p>
+                </div>
+            @endif
+
+            @if($errors->has('reason'))
+                <div class="row">
+                    <p class="alert alert-danger">{{ $errors->first('reason') }}</p>
+                </div>
+            @endif
+
+            @if(session()->has('message'))
+                <div class="row">
+                    <div class="col-12">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+                        <p class="text-center text-success alert alert-success">{{ session('message') }} </p>
+
+                    </div>
+                </div>
+            @endif
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="text-center">
-                                Go to <a href="{{ route('expense') }}"> Expenses</a>
+                                <button class="btn btn-primary" data-toggle="modal" data-target="#exModal"><i class="fa fa-plus-circle"></i> Add Expense</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Expenses</h4>
+                            <div class="table-responsive m-t-40">
+                                <table id="myTable" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Value</th>
+                                        <th>Reason</th>
+                                        <th>VAT</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>Tiger Nixon</td>
+                                        <td>System Architect</td>
+                                        <td>Edinburgh</td>
+                                        <td>61</td>
+                                        <td>2011/04/25</td>
+                                        <td>$320,800</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Garrett Winters</td>
+                                        <td>Accountant</td>
+                                        <td>Tokyo</td>
+                                        <td>63</td>
+                                        <td>2011/07/25</td>
+                                        <td>$170,750</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ashton Cox</td>
+                                        <td>Junior Technical Author</td>
+                                        <td>San Francisco</td>
+                                        <td>66</td>
+                                        <td>2009/01/12</td>
+                                        <td>$86,000</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -119,43 +201,58 @@
             <!-- ============================================================== -->
             <!-- End PAge Content -->
             <!-- ============================================================== -->
+            <div class="modal fade" id="exModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+                <div class="modal-dialog" role="document">
+                    <form class="form-material" action="{{ route('expense') }}" method="post">
+                        @csrf
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel1">Add a new Expense</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="exdate" class="control-label">Date of Expense:</label>
+                                    <input type="date" name="date" required autofocus class="form-control" id="exdate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exval" class="control-label">Value of Expense:</label>
+                                    <input type="number" name="value" required class="form-control" id="exval">
+                                </div>
+                                <div class="form-group">
+                                    <label for="expres" class="control-label">Reason for Expense:</label>
+                                    <textarea class="form-control" id="expres" name="reason"></textarea>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Expense</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- ============================================================== -->
         </div>
-        <!-- ============================================================== -->
-        <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
         <footer class="footer text-center">
             © {{ date('Y') }} Expense Manager by HyUnG
         </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
 </div>
-<!-- ============================================================== -->
-<!-- End Wrapper -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- All Jquery -->
-<!-- ============================================================== -->
 <script src="{{ asset('js/jquery.min.js') }}"></script>
-<!-- Bootstrap tether Core JavaScript -->
 <script src="{{ asset('js/popper.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
-{{--<script src="js/jquery.slimscroll.js"></script>--}}
-<!--Wave Effects -->
 <script src="{{ asset('js/waves.js') }}"></script>
-<!--stickey kit -->
-{{--<script src="{{ asset('js/sticky-kit.min.js') }}"></script>--}}
-<!--Custom JavaScript -->
 <script src="{{ asset('js/custom.min.js') }}"></script>
+<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+<script>
+    $(function () {
+       $('#myTable').DataTable();
+    });
+</script>
 </body>
 
 </html>

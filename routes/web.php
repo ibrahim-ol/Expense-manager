@@ -12,9 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    if(Auth::check()) return redirect()->route('home');
+    return redirect('login');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('expense', 'ExpenseController@index')->name('expense');
+Route::post('expense', 'ExpenseController@store');
