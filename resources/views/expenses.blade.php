@@ -159,38 +159,22 @@
                             <div class="table-responsive m-t-40">
                                 <table id="myTable" class="table">
                                     <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Value</th>
-                                        <th>Reason</th>
-                                        <th>VAT</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Value</th>
+                                            <th>Reason</th>
+                                            <th>VAT</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>System Architect</td>
-                                        <td>Edinburgh</td>
-                                        <td>61</td>
-                                        <td>2011/04/25</td>
-                                        <td>$320,800</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td>Accountant</td>
-                                        <td>Tokyo</td>
-                                        <td>63</td>
-                                        <td>2011/07/25</td>
-                                        <td>$170,750</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ashton Cox</td>
-                                        <td>Junior Technical Author</td>
-                                        <td>San Francisco</td>
-                                        <td>66</td>
-                                        <td>2009/01/12</td>
-                                        <td>$86,000</td>
-                                    </tr>
+                                        @foreach($expenses as $exp)
+                                            <tr>
+                                                <td>{{ $exp->date }}</td>
+                                                <td> &#163;{{ $exp->value }}</td>
+                                                <td>{{ $exp->reason }}</td>
+                                                <td>&#163;{{ ($exp->value) * 0.2 }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -218,11 +202,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exval" class="control-label">Value of Expense:</label>
-                                    <input type="number" name="value" required class="form-control" id="exval">
+                                    <input type="" pattern="^(\d.*)\.(\d.{0,2})([A-Za-z]{3})$" required class="form-control" id="exval">
+                                    <span id="vat"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exval" class="control-label">Value in pounds(&#163;):</label>
+                                    <input type="" readonly name="value" required class="form-control" id="exvalp">
+                                    <span id="vat"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="expres" class="control-label">Reason for Expense:</label>
-                                    <textarea class="form-control" id="expres" name="reason"></textarea>
+                                    <textarea class="form-control" id="expres" required name="reason"></textarea>
                                 </div>
 
                             </div>
@@ -249,8 +239,42 @@
 <script src="{{ asset('js/custom.min.js') }}"></script>
 <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
 <script>
+
+    var endpoint = 'latest';
+    var access_key = 'e6c80c8072c09aa89c3b494cd40690c5';
+
     $(function () {
        $('#myTable').DataTable();
+
+       $('#exval').keyup(function () {
+           var $this = $(this)
+           if($(this).val().slice(-3) === 'EUR' || $(this).val().slice(-3) === 'eur'){
+               $('#vat').html("VAT: "+ $this.val().slice(0,-3) * 0.2);
+           }else{
+               $('#vat').html("VAT: "+ $this.val() * 0.2);
+           }
+
+       });
+        $('#exval').on('change', function(){
+            if($(this).val().slice(-3) === 'EUR' || $(this).val().slice(-3) === 'eur'){
+                console.log('converting...');
+                $(this).after('<p id="gbp">GBP: &#163;<i class="fa fa-spinner fa-spin"></i></p>')
+                let fm = $(this).val();
+                let amount = fm.slice(0,-3);
+                console.log('http://data.fixer.io/api/'+endpoint+'?access_key=' + access_key);
+                $.ajax({
+                    url: 'http://data.fixer.io/api/'+endpoint+'?access_key=' + access_key,
+                    dataType: 'jsonp',
+                    success: function (json) {
+                        let am =amount * json.rates.GBP
+                        console.log(am);
+                        $('#gbp').html('<p id="gbp">GBP: &#163; '+ am +'</p>')
+                        $('#exvalp').val(am);
+                    },
+                });
+            }
+
+        });
     });
 </script>
 </body>

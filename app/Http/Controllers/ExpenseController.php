@@ -13,14 +13,15 @@ class ExpenseController extends Controller
     }
 
     public function index(){
-
-        return view('expenses');
+        $expenses = Expense::query()->orderBy('date')->get();
+        return view('expenses', ['expenses'=>$expenses]);
     }
 
     public function store(Request $request){
         $this->validate($request,[
             'date' => 'required',
             'value' => 'required',
+            'reason' => 'required'
         ]);
 
         $expense = new Expense();
