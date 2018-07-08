@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Expense;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ExpenseController extends Controller
 {
@@ -13,7 +14,8 @@ class ExpenseController extends Controller
     }
 
     public function index(){
-        $expenses = Expense::query()->orderBy('date')->get();
+        $expenses = Auth::user()->expenses()->get();
+
         return view('expenses', ['expenses'=>$expenses]);
     }
 
@@ -28,6 +30,7 @@ class ExpenseController extends Controller
         $expense->date = $request->input('date');
         $expense->value = $request->input('value');
         $expense->reason = $request->input('reason');
+        $expense->user_id = Auth::user()->id;
         $expense->save();
 
         session()->flash('message', 'Expense added to Expenses list');

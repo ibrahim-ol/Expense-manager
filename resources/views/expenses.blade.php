@@ -28,22 +28,20 @@
             <!-- Logo -->
             <!-- ============================================================== -->
             <div class="navbar-header">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="{{ url('/') }}">
                     <!-- Logo icon -->
                     <b>
                         <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                         <!-- Dark Logo icon -->
-                        <img src="../assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
                         <!-- Light Logo icon -->
-                        <img src="../assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
+                        {{--<img src="../assets/images/logo-light-icon.png" alt="homepage" class="dark-logo" />--}}
+                        <span class="dark-logo"><i class="fa fa-money"></i></span>
                     </b>
                     <!--End Logo icon -->
                     <!-- Logo text -->
                     <span>
-                         <!-- dark Logo text -->
-                         <img src="../assets/images/logo-text.png" alt="homepage" class="dark-logo" />
                         <!-- Light Logo text -->
-                         <img src="../assets/images/logo-light-text.png" class="light-logo" alt="homepage" /></span> </a>
+                         <p class="dark-logo">Expense Manager</p> </a>
             </div>
             <!-- ============================================================== -->
             <!-- End Logo -->
@@ -72,7 +70,10 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+                                <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Logout</a></li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
                             </ul>
                         </div>
                     </li>
@@ -98,7 +99,7 @@
                 <div class="col-md-6 col-8 align-self-center">
                     <h3 class="text-themecolor m-b-0 m-t-0">Dashboard</h3>
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"> Home</li>
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                         <li class="breadcrumb-item active">Expenses</li>
                     </ol>
                 </div>
@@ -261,12 +262,11 @@
                 $(this).after('<p id="gbp">GBP: &#163;<i class="fa fa-spinner fa-spin"></i></p>')
                 let fm = $(this).val();
                 let amount = fm.slice(0,-3);
-                console.log('http://data.fixer.io/api/'+endpoint+'?access_key=' + access_key);
                 $.ajax({
                     url: 'http://data.fixer.io/api/'+endpoint+'?access_key=' + access_key,
                     dataType: 'jsonp',
                     success: function (json) {
-                        let am =amount * json.rates.GBP
+                        let am = amount * json.rates.GBP;
                         console.log(am);
                         $('#gbp').html('<p id="gbp">GBP: &#163; '+ am +'</p>')
                         $('#exvalp').val(am);
@@ -281,3 +281,4 @@
 
 </html>
 
+                          
