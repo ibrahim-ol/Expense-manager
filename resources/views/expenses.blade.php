@@ -203,7 +203,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exval" class="control-label">Value of Expense:</label>
-                                    <input type="" pattern="^(\d.*)\.(\d.{0,2})([A-Za-z]{3})$" required class="form-control" id="exval">
+                                    <input type="" pattern="^(\d.*)\.(\d{0,2})([A-Za-z]{3})$" required class="form-control" id="exval">
                                     <span id="vat"></span>
                                 </div>
                                 <div class="form-group">
@@ -270,7 +270,7 @@
                         console.log(am);
                         $('#gbp').html('<p id="gbp">GBP: &#163; '+ am +'</p>')
                         $('#exvalp').val(am);
-                        $('#vatp').val("&#163"+am*0.2)
+                        $('#vatp').html('VAT: &#163;'+am*0.2);
                     },
                 });
             }
