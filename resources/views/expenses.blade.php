@@ -163,8 +163,9 @@
                                         <tr>
                                             <th>Date</th>
                                             <th>Value</th>
-                                            <th>Reason</th>
                                             <th>VAT</th>
+                                            <th>Reason</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -172,8 +173,9 @@
                                             <tr>
                                                 <td>{{ $exp->date }}</td>
                                                 <td> &#163;{{ $exp->value }}</td>
-                                                <td>{{ $exp->reason }}</td>
                                                 <td>&#163;{{ ($exp->value) * 0.2 }}</td>
+                                                <td>{{ $exp->reason }}</td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -203,12 +205,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exval" class="control-label">Value of Expense:</label>
-                                    <input type="" pattern="^(\d.*)\.(\d{0,2})([A-Za-z]{3})$" required class="form-control" id="exval">
+                                    <input type="text"  required class="form-control" id="exval">
                                     <span id="vat"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="exval" class="control-label">Value in pounds(&#163;):</label>
-                                    <input type="" readonly name="value" required class="form-control" id="exvalp">
+                                    <input type="text" readonly name="value" required class="form-control" id="exvalp">
                                     <span id="vatp"></span>
                                 </div>
                                 <div class="form-group">
