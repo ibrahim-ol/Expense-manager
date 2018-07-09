@@ -209,7 +209,7 @@
                                 <div class="form-group">
                                     <label for="exval" class="control-label">Value in pounds(&#163;):</label>
                                     <input type="" readonly name="value" required class="form-control" id="exvalp">
-                                    <span id="vat"></span>
+                                    <span id="vatp"></span>
                                 </div>
                                 <div class="form-group">
                                     <label for="expres" class="control-label">Reason for Expense:</label>
@@ -270,6 +270,7 @@
                         console.log(am);
                         $('#gbp').html('<p id="gbp">GBP: &#163; '+ am +'</p>')
                         $('#exvalp').val(am);
+                        $('#vatp').val("&#163"+am*0.2)
                     },
                 });
             }
